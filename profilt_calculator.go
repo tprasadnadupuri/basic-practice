@@ -31,8 +31,7 @@ func main() {
 	ebt := revenu - expenses
 	profit := ebt * (1 - tax_rate/100)
 
-	fmt.Println("Earning before tax is", math.Round(ebt))
-	fmt.Println("Profit is", math.Round(profit))
+	fmt.Printf("Earning before tax is  %v \n Profit is %v \n", math.Round(ebt), math.Round(profit))
 
 	ration := ebt / profit
 	fmt.Println("Ration is", ration)
