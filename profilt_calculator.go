@@ -15,25 +15,29 @@ import (
 
 func main() {
 
-	var revenu float64
-	var expenses float64
-	var tax_rate float64
+	revenu := getUserInput("Enter your revenu")
 
-	fmt.Println("Enter your Revenu : ")
-	fmt.Scan(&revenu)
+	expenses := getUserInput("Enter your expenses :")
 
-	fmt.Println("Enter your expenses :")
-	fmt.Scan(&expenses)
-
-	fmt.Println("Enter the Tax rate :")
-	fmt.Scan(&tax_rate)
+	tax_rate := getUserInput("Enter the Tax rate :")
 
 	ebt := revenu - expenses
 	profit := ebt * (1 - tax_rate/100)
 
-	fmt.Printf("Earning before tax is  %v \n Profit is %v \n", math.Round(ebt), math.Round(profit))
+	formatedFV := fmt.Sprintf("Future Value : %.1f \n", ebt)
+
+	fmt.Println(formatedFV)
+
+	fmt.Printf("Earning before tax is  %.2f \n Profit is %.2f \n", ebt, math.Round(profit))
 
 	ration := ebt / profit
 	fmt.Println("Ration is", ration)
+
+}
+
+func getUserInput(infoText string) (inputValue float64) {
+	fmt.Println(infoText)
+	fmt.Scan(&inputValue)
+	return
 
 }
