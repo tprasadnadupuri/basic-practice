@@ -4,22 +4,45 @@
 //Ask for Revenu, Expenses & Tax rate
 //Calculate earning before TAX (EBT) and earnings after TAX (profit)
 //Calculate ration (EBT/profit)
-//Output EBT, profit and the ration
+//Output EBT, profit and the
+
+// Goals
+// Validate user Input
+// => show error messages & Exit if invalid input is provided
+//	- No negative numbers
+// - Not 0
+
+// 2) Store Calculated restults into file.
 
 package main
 
 import (
+	"errors"
 	"fmt"
 	"math"
+	"os"
 )
 
 func main() {
 
-	revenu := getUserInput("Enter your revenu")
+	revenu, err := getUserInput("Enter your revenu")
 
-	expenses := getUserInput("Enter your expenses :")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
-	tax_rate := getUserInput("Enter the Tax rate :")
+	expenses, err := getUserInput("Enter your expenses :")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	tax_rate, err := getUserInput("Enter the Tax rate :")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	ebt := revenu - expenses
 	profit := ebt * (1 - tax_rate/100)
@@ -28,16 +51,27 @@ func main() {
 
 	fmt.Println(formatedFV)
 
-	fmt.Printf("Earning before tax is  %.2f \n Profit is %.2f \n", ebt, math.Round(profit))
+	fmt.Printf("Earning before tax is  %.2f\nProfit is %.2f\n", ebt, math.Round(profit))
 
-	ration := ebt / profit
-	fmt.Println("Ration is", ration)
+	ratio := ebt / profit
+	fmt.Println("Ration is", ratio)
+
+	storeResults(ebt, profit, ratio)
 
 }
 
-func getUserInput(infoText string) (inputValue float64) {
+func storeResults(ebt, profit, ratio float64) {
+	results := fmt.Sprintf("EBT : %.1f\nProfit : %.1f\nRatio : %.3f\n", ebt, profit, ratio)
+	os.WriteFile("results.txt", []byte(results), 0644)
+}
+func getUserInput(infoText string) (float64, error) {
+
+	var userInput float64
 	fmt.Println(infoText)
-	fmt.Scan(&inputValue)
-	return
+	fmt.Scan(&userInput)
+	if userInput <= 0 {
+		return 0, errors.New("Value must be positive number")
+	}
+	return userInput, nil
 
 }
